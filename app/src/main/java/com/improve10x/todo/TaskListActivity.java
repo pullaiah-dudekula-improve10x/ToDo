@@ -65,12 +65,42 @@ public class TaskListActivity extends AppCompatActivity {
         });
 
     }
+    public void delete(String id) {
+        ToDoApi toDoApi = new ToDoApi();
+        ToDoServise toDoServise = toDoApi.createToDoServise();
+        Call<Void> call = toDoServise.onDelete(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(TaskListActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                fetchData();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(TaskListActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
     public void setUpTaskListRv() {
         taskListRv = findViewById(R.id.tasklist_rv);
        taskListRv.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter();
         taskAdapter.setData(taskLists);
+        taskAdapter.setOnItemActionListener(new OnItemActionListener() {
+            @Override
+            public void onDelete(String taskId) {
+                delete(taskId);
+
+            }
+
+            @Override
+            public void onEdit(TaskList task) {
+
+            }
+        });
         taskListRv.setAdapter(taskAdapter);
     }
 

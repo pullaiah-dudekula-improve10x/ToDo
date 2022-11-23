@@ -7,15 +7,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public List<TaskList> taskLists;
+    public OnItemActionListener onItemActionListener;
 
     public void setData(List<TaskList>tasks) {
         taskLists = tasks;
         notifyDataSetChanged();
+    }
+    public void setOnItemActionListener(OnItemActionListener actionListener) {
+        onItemActionListener = actionListener;
     }
     @NonNull
     @Override
@@ -30,6 +35,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         TaskList taskList = taskLists.get(position);
         holder.textTxt.setText(taskList.task);
         holder.descriptionTxt.setText(taskList.description);
+        holder.deleteIb.setOnClickListener(view -> {
+            onItemActionListener.onDelete(taskList.id);
+        });
 
     }
 
