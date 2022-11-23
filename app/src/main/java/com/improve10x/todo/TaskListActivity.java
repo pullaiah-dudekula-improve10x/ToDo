@@ -7,21 +7,54 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TaskListActivity extends AppCompatActivity {
-    public ArrayList<TaskList>taskLists;
+    public List<TaskList>taskLists = new ArrayList<>();
     public RecyclerView taskListRv;
+    public TaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
         getSupportActionBar().setTitle("Task List");
-        setUpData();
         setUpTaskListRv();
         setUpAdd();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchData();
+    }
+
+    public void fetchData() {
+        ToDoApi toDoApi = new ToDoApi();
+        ToDoServise toDoServise = toDoApi.createToDoServise();
+        Call<List<TaskList>> Call = toDoServise.listTask();
+        Call.enqueue(new Callback<List<TaskList>>() {
+            @Override
+            public void onResponse(retrofit2.Call<List<TaskList>> call, Response<List<TaskList>> response) {
+                List<TaskList>taskLists = response.body();
+                taskAdapter.setData(taskLists);
+
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<List<TaskList>> call, Throwable t) {
+                Toast.makeText(TaskListActivity.this, "Failed to fetch Data", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     public void setUpAdd() {
@@ -35,32 +68,10 @@ public class TaskListActivity extends AppCompatActivity {
 
     public void setUpTaskListRv() {
         taskListRv = findViewById(R.id.tasklist_rv);
-        taskListRv.setLayoutManager(new LinearLayoutManager(this));
-        TaskAdapter taskAdapter = new TaskAdapter();
+       taskListRv.setLayoutManager(new LinearLayoutManager(this));
+        taskAdapter = new TaskAdapter();
         taskAdapter.setData(taskLists);
         taskListRv.setAdapter(taskAdapter);
     }
 
-    private void setUpData() {
-        taskLists = new ArrayList<>();
-        TaskList vegetables = new TaskList();
-        vegetables.taskList = "Get vegetables";
-        vegetables.description = "for 1 week";
-        taskLists.add(vegetables);
-
-        TaskList news = new TaskList();
-        news.taskList = "Reading News";
-        news.description = "Explore politics,filmy and sports news";
-        taskLists.add(news);
-
-        TaskList lunch = new TaskList();
-        lunch.taskList = "Prepare Lunch";
-        lunch.description = "Biryani and Raitha.Yummyyyyy";
-        taskLists.add(lunch);
-
-        TaskList breakFast = new TaskList();
-        breakFast.taskList = "Have Breakfast";
-        breakFast.description = "Healthy breakfast for a better morning";
-        taskLists.add(breakFast);
-    }
 }

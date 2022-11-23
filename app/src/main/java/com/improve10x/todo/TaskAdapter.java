@@ -8,10 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
-    public ArrayList<TaskList>taskLists;
-    public void setData(ArrayList<TaskList>tasks) {
+    public List<TaskList> taskLists;
+
+    public void setData(List<TaskList>tasks) {
         taskLists = tasks;
         notifyDataSetChanged();
     }
@@ -26,7 +28,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskList taskList = taskLists.get(position);
-        holder.textTxt.setText(taskList.taskList);
+        holder.textTxt.setText(taskList.task);
         holder.descriptionTxt.setText(taskList.description);
 
     }

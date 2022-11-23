@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="ToDo"
-        android:textColor="#050505"
+        android:textColor="#2136AC"
         android:textSize="24sp" />
 
     <TextView
