@@ -29,6 +29,14 @@ public class TaskListActivity extends AppCompatActivity {
         setUpTaskListRv();
         setUpAdd();
 
+
+    }
+
+    public void editTask(TaskList taskList) {
+        Intent intent = new Intent(this,AddTaskActivity.class);
+        intent.putExtra("taskList",taskList);
+        startActivity(intent);
+
     }
 
     @Override
@@ -98,6 +106,7 @@ public class TaskListActivity extends AppCompatActivity {
 
             @Override
             public void onEdit(TaskList task) {
+                editTask(task);
 
             }
         });

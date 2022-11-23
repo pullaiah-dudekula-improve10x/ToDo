@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ToDoServise {
@@ -19,4 +20,7 @@ public interface ToDoServise {
 
     @DELETE("pullaiahToDo/{id}")
     Call<Void> onDelete (@Path("id")String id);
+
+    @PUT("pullaiahToDo/{id}")
+    Call<Void> updateTask(@Path("id") String id, @Body TaskList taskList);
 }

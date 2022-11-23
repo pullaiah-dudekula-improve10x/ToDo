@@ -38,6 +38,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         holder.deleteIb.setOnClickListener(view -> {
             onItemActionListener.onDelete(taskList.id);
         });
+        holder.itemView.setOnClickListener(view -> {
+            onItemActionListener.onEdit(taskList);
+        });
 
     }
 
